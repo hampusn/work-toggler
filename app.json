@@ -1,0 +1,15 @@
+{
+  "name": "Work Toggler",
+  "description": "This app exposes small parts of the toggl api to specific endpoints.",
+  "website": "https://hampusn-work-toggler.herokuapp.com/",
+  "repository": "https://github.com/hampusn/work-toggler",
+  "image": "heroku/ruby",
+  "env": {
+    "TOGGL_API_TOKEN": {
+      "description": "A secret key for talking to the toggl api."
+    },
+    "ACCESS_AUTH": {
+      "description": "Basic auth token. Base64 encode 'user:pass'"
+    }
+  }
+}
