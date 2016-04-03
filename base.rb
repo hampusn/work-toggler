@@ -8,9 +8,16 @@ module Hampusn
       set :sessions, true
 
       register do
-        def use_basic_auth (use_basic_auth)
+        def protect_with (type)
           condition do
-            basic_auth_protected!
+            case type
+              when 'basic_auth'
+                basic_auth_protected!
+              when 'query_auth'
+                query_auth_protected!
+              else
+                throw(:halt, [500, "Invalid auth type.\n"])
+            end
           end
         end
       end
@@ -31,6 +38,16 @@ module Hampusn
           end
 
           @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == admin_auth
+        end
+
+        def query_auth_protected!
+          has_key    = !!params[:auth] && !params[:auth].empty?
+          query_auth = params[:auth]
+          env_auth   = ENV['ACCESS_AUTH'].unpack("m*").first
+
+          unless has_key && query_auth == env_auth
+            throw(:halt, [401, "Oops... you seem to have missed the very unsecure auth key.\n"])
+          end
         end
       end
 

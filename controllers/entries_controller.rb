@@ -12,7 +12,7 @@ module Hampusn
           @toggl_api ||= TogglV8::API.new(ENV['TOGGL_API_TOKEN'])
         end
 
-        post '/entries/toggle', use_basic_auth: true do
+        post '/entries/toggle', protect_with: 'query_auth' do
           result = {
             status: "success"
           }
